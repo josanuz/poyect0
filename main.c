@@ -4,17 +4,21 @@
 #include "carro.h"
 #include "params.h"
 #include "lista.h"
+#include "semaforos.h"
+#include "oficial.h"
+#include <time.h>
 short toExit = 1;
 Puente * puente; 
-Carro * carros[8];
+Carro ** carros;
 List * l = init_list();
 pthread_t printer;
 
-void * printCars(void *){
-	int i = 0, x;
+void * printCars(void * argc){
+	int i = 0, x, dis;
+	dis = *((int *)argc);
 	while(toExit){
 		printf("\033[5;0H",i);
-		for(i = 0;i < 10; i++){
+		for(i = 0;i < dis; i++){
 			printf("=");
 		}
 		printf("\033[5;0H");
@@ -23,10 +27,12 @@ void * printCars(void *){
 		while(tmp != NULL){
 			x = tmp->dato->x;
 			printf("\033[5;%dH",x+1);
-			printf("%d",tmp->dato->id);
+			printf("@");
+			//else printf(">");
 			tmp = tmp->next;
 		}
-		usleep(1000);
+		//usleep(1000);
+		printf("\033[7;0H   ");
 		printf("\033[7;0H %d",puente->cant_carros);
 	}
 	pthread_exit(NULL);
@@ -36,19 +42,34 @@ int main(int argc, char **argv){
 	int i;
 	printf("Iniciar\n");
 	puente = puente_init(atoi(argv[1]));
-	//Carro * carros = (Carro*) malloc(4*sizeof(Carro));
-	for(i = 0; i< 8 ; i++) carros[i] = carro_init(2);
+	int MAX = atoi(argv[2]);
 	
-	pthread_create(&printer,NULL,printCars,NULL);
+	carros = (Carro**) malloc( MAX * sizeof(Carro*) );
+	for(i = 0; i< MAX ; i++) carros[i] = carro_init(1);
+	pthread_create(&printer,NULL,printCars,&puente->distancia);
+	
 	printf("Arrancara en 2..");
 	sleep(2);
-	for(i = 0; i< 8 ; i++){
+	/*for(i = 0; i< MAX ; i++){ // Normal Pasa Cuando Puede
 		params * arg;
-		arg = init_parametros(carros[i],puente,i < 4 ? IZQUIERDA : DERECHA);
-		if(carros[i]->thread) ;
+		srand(time(0) + getpid() + rand()*(rand()%10));
+		arg = init_parametros(carros[i],puente,i % 2 ? IZQUIERDA : DERECHA);
 		insertCar(carros[i],l);
+		usleep(1 + rand()%1000);
 		pthread_create(carros[i]->thread,NULL,ingresar,(void*)arg);
 	}
-	for(i = 0; i< 8 ; i++) pthread_join(*carros[i]->thread, NULL);
+	for(i = 0; i< MAX ; i++) pthread_join(*carros[i]->thread, NULL);*/
+	arrancarOficial(puente, 2);
+	for(i = 0; i < MAX ; i++){
+		params * arg;
+		srand(time(0) + getpid() + rand()*(rand()%10));
+		arg = init_parametros(carros[i],puente,i % 4 ? IZQUIERDA : DERECHA);
+		insertCar(carros[i],l);
+		//sleep(1 + rand()%2);
+		sleep(1);
+		pthread_create(carros[i]->thread,NULL,ingresarOficial,(void*)arg);
+	}
+	for(i = 0; i< MAX ; i++) pthread_join(*carros[i]->thread, NULL);
+	detenerOficial();
 	toExit = 0;
 }

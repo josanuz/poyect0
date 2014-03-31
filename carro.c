@@ -59,6 +59,7 @@ void cruzar(Puente * p, Carro * c, char direccion){
 void dejar(Puente * p, Carro * c, char direccion){
 		pthread_mutex_lock(&p->semaforos[0]);
 		p->cant_carros--;
+		sleep(c->velocidad);
 		c->x = c->y = 1000;
 		pthread_mutex_unlock(&p->semaforos[0]);
 		if(p->cant_carros == 0)  {

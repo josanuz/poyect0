@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGSs=-g #-Wall
 LIBS=-lpthread
-SOURCES=main.c datos.h Puente.h Puente.c carro.h carro.c cola.c params.h params.c lista.h lista.c
+SOURCES=main.c datos.h Puente.h Puente.c carro.h carro.c cola.c params.h params.c lista.h lista.c semaforos.h oficial.h
 OBJECTS=$(SOURCES:.cpp=.o)
 EXE=puente
 
