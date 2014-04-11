@@ -94,19 +94,64 @@ void OficialTransito(){
 }
 
 int main(int argc, char **argv){
-	int i;
+	int i,opciones,bandera=1;
 	leer(argv[1]);
-	printf("Iniciar\n");
+	
+	
+		
+	while(bandera){	
+	printf("\t\t---------------------------------------\n");
+	printf("\t\t**************Puente*******************\n");
+	printf("\t\tEscoja la opcion que desea realizar\n");
+	printf("\t\t-----------------------------------\n");
+	printf("\t\tFIFO\n");
+	printf("\t\tSemaforos\n");
+	printf("\t\tOficial de Transito\n");
+	printf("\t\tFinalizar\n");
+	printf("----->");
+	scanf("%d",&opciones);
+	printf("%d",opciones);
+	system("/usr/bin/clear");
+	
+		
+	switch(opciones){
+		
+	case 1:
 	puente = puente_init(longpuente);
 	MAX = cantmaxcars;
 	
 	carros = (Carro**) malloc( MAX * sizeof(Carro*) );
+	
 	for(i = 0; i< MAX ; i++) carros[i] = carro_init(1);
 	pthread_create(&printer,NULL,printCars,&puente->distancia);
 	
-	
 	printf("Arrancara en 2..");
 	sleep(2);
+	FIFO();
+	break;
+	case 2:
+	
+	break;
+	
+	case 3:
+	puente = puente_init(longpuente);
+	MAX = cantmaxcars;
+	
+	carros = (Carro**) malloc( MAX * sizeof(Carro*) );
+	
+	for(i = 0; i< MAX ; i++) carros[i] = carro_init(1);
+	pthread_create(&printer,NULL,printCars,&puente->distancia);
+	printf("Arrancara en 2..");
+	sleep(2);
+	OficialTransito();
+	break;
+	case 4:
+	bandera=0;
+	break;
+	default:
+	break;	
+		}
+	}
 	
 	
 	
