@@ -100,14 +100,15 @@ int main(int argc, char **argv){
 	
 		
 	while(bandera){	
+	system("/usr/bin/clear");
 	printf("\t\t---------------------------------------\n");
 	printf("\t\t**************Puente*******************\n");
 	printf("\t\tEscoja la opcion que desea realizar\n");
 	printf("\t\t-----------------------------------\n");
-	printf("\t\tFIFO\n");
-	printf("\t\tSemaforos\n");
-	printf("\t\tOficial de Transito\n");
-	printf("\t\tFinalizar\n");
+	printf("\t\t1.FIFO\n");
+	printf("\t\t2.Semaforos\n");
+	printf("\t\t3.Oficial de Transito\n");
+	printf("\t\t4.Finalizar\n");
 	printf("----->");
 	scanf("%d",&opciones);
 	printf("%d",opciones);
@@ -149,6 +150,8 @@ int main(int argc, char **argv){
 	bandera=0;
 	break;
 	default:
+	printf("Opcion Invalida\n");
+	printf("Porfavor Inserte una Opcion del 1 al 4\n");
 	break;	
 		}
 	}
