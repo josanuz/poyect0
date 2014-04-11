@@ -78,7 +78,7 @@ for(i = 0; i< MAX ; i++){ // Normal Pasa Cuando Puede
 void OficialTransito(){
 	
 	int i;
-	arrancarOficial(puente, 2);//Poner en un metodo oficial
+	arrancarOficial(puente, 1);//Poner en un metodo oficial
 	for(i = 0; i < MAX ; i++){
 		params * arg;
 		srand(time(0) + getpid() + rand()*(rand()%10));
